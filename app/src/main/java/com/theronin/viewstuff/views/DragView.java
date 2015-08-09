@@ -3,6 +3,7 @@ package com.theronin.viewstuff.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -72,23 +73,46 @@ public class DragView extends LinearLayout {
         return true;
     }
 
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (dragHelper.continueSettling(true)) {
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
     private class DragHelperCallback extends ViewDragHelper.Callback {
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            Log.d(TAG, "tryCaptureView");
+            Log.d(TAG, "tryCaptureView. Pointer id: " + pointerId);
             return child == dragView;
         }
 
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
-            Log.d(TAG, "clampViewPositionHorizontal " + left + ", " + dx);
+//            Log.d(TAG, "clampViewPositionHorizontal " + left + ", " + dx);
             final int leftBound = getPaddingLeft();
-            final int rightBound = getWidth() - dragView.getWidth();
+            final int rightBound = getWidth() - child.getWidth();
 
             final int newLeft = Math.min(Math.max(left, leftBound), rightBound);
 
             return newLeft;
+        }
+
+        @Override
+        public int getViewHorizontalDragRange(View child) {
+            return (getWidth() - child.getWidth()) - getPaddingLeft();
+        }
+
+        @Override
+        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            if (xvel < 0) {
+                dragHelper.settleCapturedViewAt(getPaddingLeft(), releasedChild.getTop());
+            } else {
+                dragHelper.settleCapturedViewAt(getWidth() - releasedChild.getWidth(), releasedChild.getTop());
+            }
+            invalidate();
         }
     }
 }
