@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ViewStuff</string>
+
+    <string name="hello_views">View Stuff</string>
+    <string name="action_settings">Settings</string>
+    <string name="summary">A project for learning about making custom views. Drop in a the view below to test it out</string>
+</resources>

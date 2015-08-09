@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:custom="http://schemas.android.com/apk/res-auto">
+    <com.theronin.viewstuff.views.DragView
+        android:layout_marginTop="8dp"
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="#ff00ff"
+        custom:dragSensitivity="1.0">
+
+
+        <View
+            android:id="@+id/drag_view"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="#00ff00">
+
+
+        </View>
+
+
+    </com.theronin.viewstuff.views.DragView>
+
+</merge>
